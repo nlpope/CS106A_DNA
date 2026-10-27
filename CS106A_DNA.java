@@ -105,9 +105,12 @@ public class CS106A_DNA extends ConsoleProgram
 	{
 		if (shortDNA.length() >= longDNA.length()) return -2;
 		boolean match = false;
+		int jStart = 0;
 		while (!match){
-			for (int i = 0, j = 0; i < shortDNA.length(); i = j + 1){
-				
+			for (int i = 0 ; i < longDNA.length(); i++){
+				for (int j = jStart; j < shortDNA.length(); j++){
+					
+				}
 			}
 		}
 		return 1;
