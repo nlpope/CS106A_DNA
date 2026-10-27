@@ -18,8 +18,9 @@ public class CS106A_DNA extends ConsoleProgram
 	public enum BaseLengths { SHORT, LONG }
 	
 	public enum Errors { 
-		FORMATTING("Please ensure that both all letters in each base consist " +
-				"of 'A','T','G', or 'C' and that the latter is longer than the former.");
+		FORMATTING("Please ensure that both all bases in each strand consist " +
+				"of only 'A','T','G', or 'C' and that the latter strand is longer than " +
+				"the former.");
 		
 		private final String errValue;
 		
@@ -31,25 +32,8 @@ public class CS106A_DNA extends ConsoleProgram
 	public void run()
 	{
 		introduceApp();
-		String clientInputRaw = "";
-		while (!clientInputRaw.equals(SENTINEL)){
-			clientInputShort = "";
-			clientInputLong = "";
-			for (int i = 0; i < 2; i++){
-				String strandLength = clientInputShort.equals("") ? "short" : "long";
-				clientInputRaw = readLine("Enter " + strandLength + " strand: ");
-				if (clientInputRaw.equals(SENTINEL)) { println("goodbye"); break; }
-				
-				if (clientInputShort.equals("")) setClientInput(BaseLengths.SHORT, clientInputRaw);
-				else setClientInput(BaseLengths.LONG, clientInputRaw);	
-				
-				if (!verifyStrand(clientInputShort) || !verifyStrand(clientInputLong)){
-					println(Errors.FORMATTING.errValue);
-					break;
-				} else { 
-					findFirstMatchingPosition(clientInputShort, clientInputLong);
-				}
-			}
+		while (!clientInputRaw.equals(SENTINEL)){ 
+			setStrandsAndFindMatch();
 		}
 	}
 	
@@ -60,13 +44,40 @@ public class CS106A_DNA extends ConsoleProgram
 	}
 	
 	
-	private String setClientInput(BaseLengths len, String strand)
+	private void setStrandsAndFindMatch()
+	{
+		clientInputShort = "";
+		clientInputLong = "";
+		for (int i = 0; i < 2; i++){
+			String strandLength = clientInputShort.equals("") ? "short" : "long";
+			clientInputRaw = readLine("Enter " + strandLength + " strand: ");
+			if (clientInputRaw.equals(SENTINEL)) { println("goodbye"); break; }
+			
+			if (clientInputShort.equals("")) setClientInput(BaseLengths.SHORT, clientInputRaw);
+			else setClientInput(BaseLengths.LONG, clientInputRaw);	
+			
+			if (!verifyStrand(clientInputShort) || !verifyStrand(clientInputLong)){
+				println(Errors.FORMATTING.errValue);
+				break;
+			} else { 
+				int firstIndex = findFirstMatchingPosition(clientInputShort, clientInputLong);
+				if (firstIndex == -2) { println(Errors.FORMATTING.errValue); break; }
+				println("First matching index: " + firstIndex);
+			}
+		}
+	}
+	
+	
+	private void setClientInput(BaseLengths len, String strand)
 	{
 		switch (len){
 		case SHORT:
-			//verifyStrand()
+			clientInputShort = strand;
+			break;
+		case LONG: 
+			clientInputLong = strand;
+			break;
 		}
-		return "";
 	}
 	
 	
@@ -92,10 +103,6 @@ public class CS106A_DNA extends ConsoleProgram
 	
 	private int findFirstMatchingPosition(String shortDNA, String longDNA)
 	{
-		//verify strands
-		if (!verifyStrand(shortDNA)) return -2;
-		if (!verifyStrand(longDNA)) return -2;
-		
 		if (shortDNA.length() >= longDNA.length()) return -2;
 		boolean match = false;
 		while (!match){
@@ -107,6 +114,7 @@ public class CS106A_DNA extends ConsoleProgram
 	}
 	
 	//Instance variables
+	private String clientInputRaw = "";
 	private String clientInputShort = "";
 	private String clientInputLong = "";
 }
