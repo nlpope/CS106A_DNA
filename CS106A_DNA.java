@@ -15,7 +15,30 @@ public class CS106A_DNA extends ConsoleProgram
 	//Named constants
 	private static final String SENTINEL = "ENDPROGRAM";
 	
+	//Enumerations
 	public enum BaseLengths { SHORT, LONG }
+	
+	public enum BaseBonds { 
+		A('T'), T('A'), G('C'), C('G');
+		
+		public final char complement;
+		
+		BaseBonds(char complement)
+		{
+			this.complement = complement;
+		}
+	}
+	
+	public enum Messages { 
+		Success("Match detected "), Fail("No match detected.");
+		
+		private final String value;
+		
+		Messages(String value)
+		{
+			this.value = value;
+		}
+	}
 	
 	public enum Errors { 
 		FORMATTING("Please ensure that both all bases in each strand consist " +
@@ -46,8 +69,8 @@ public class CS106A_DNA extends ConsoleProgram
 				
 			} else if (verifyFormatting(clientInputShort, clientInputLong)){
 				int firstMatch = findFirstMatchingPosition(clientInputShort, clientInputLong);
-				String results = (firstMatch != -1) ? Messages.Success.value() + firstMatch : Messages.Fail.value();
-				pritnln(results);
+				String results = (firstMatch != -1) ? Messages.Success.value : Messages.Fail.value;
+				println(results);
 			} else {
 				println(Errors.FORMATTING.errValue);
 			}
@@ -77,7 +100,22 @@ public class CS106A_DNA extends ConsoleProgram
 	}
 	
 	
-	private 
+	private boolean verifyFormatting(String shortDNA, String longDNA)
+	{
+		if (shortDNA.length() >= longDNA.length()) return false;
+		
+		for (int i = 0; i < shortDNA.length(); i++){
+			char ch = Character.toUpperCase((shortDNA.charAt(i)));
+			if (ch != 'A' && ch != 'T' && ch != 'G' && ch != 'C') return false;
+		}
+		
+		for (int i = 0; i < longDNA.length(); i++){
+			char ch = Character.toUpperCase((longDNA.charAt(i)));
+			if (ch != 'A' && ch != 'T' && ch != 'G' && ch != 'C') return false;
+		}
+		
+		return true;
+	}
 	
 	
 	private int findFirstMatchingPosition(String shortDNA, String longDNA)
@@ -93,6 +131,13 @@ public class CS106A_DNA extends ConsoleProgram
 			}
 		}
 		return 1;
+	}
+	
+	
+	private boolean verifyBond(char longStrandChar, char shortStrandChar)
+	{
+		
+		return true;
 	}
 	
 	//Instance variables
