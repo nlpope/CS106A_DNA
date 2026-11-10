@@ -56,20 +56,22 @@ public class CS106A_DNA extends ConsoleProgram
 	{
 		introduceApp();
 		while (true){ 
+			
 			for (int i = 0; i < 2; i ++){
-				if (clientInputShort.equals("")){
+				if (clientInputShort.equals(SENTINEL) || clientInputLong.equals(SENTINEL)){ 
+					println("goodbye");
+					break; 	
+					
+				} else if (clientInputShort.equals("")){
 					setClientInput(BaseLengths.SHORT); 
 				} else { 
 					setClientInput(BaseLengths.LONG);
 				}
 			}
 			
-			if (clientInputShort.equals(SENTINEL) || clientInputLong.equals(SENTINEL)){ 
-				break; 	
-				
-			} else if (verifyFormatting(clientInputShort, clientInputLong)){
+			if (verifyFormatting(clientInputShort, clientInputLong)){
 				int firstMatch = findFirstMatchingPosition(clientInputShort, clientInputLong);
-				String results = (firstMatch != -1) ? Messages.Success.value : Messages.Fail.value;
+				String results = (firstMatch != -1) ? Messages.Success.value + firstMatch: Messages.Fail.value;
 				println(results);
 			} else {
 				println(Errors.FORMATTING.errValue);
@@ -120,24 +122,43 @@ public class CS106A_DNA extends ConsoleProgram
 	
 	private int findFirstMatchingPosition(String shortDNA, String longDNA)
 	{
-		if (shortDNA.length() >= longDNA.length()) return -2;
-		boolean match = false;
-		int jStart = 0;
-		while (!match){
-			for (int i = 0 ; i < longDNA.length(); i++){
-				for (int j = jStart; j < shortDNA.length(); j++){
-					
+		int matchPosition = -1;
+		boolean match = false; 
+		
+		for(int i = 0; i < longDNA.length()-shortDNA.length(); i++){
+			for(int j = i; j < shortDNA.length(); j++){
+				if (verifyBond(shortDNA.charAt(i), longDNA.charAt(j)) && !match){
+					match = true;
+					matchPosition = j;
+				} else if (!verifyBond(shortDNA.charAt(i), longDNA.charAt(j))){
+					match = false;
+					matchPosition = -1;
+					break;
+				} else {
+					continue;
 				}
 			}
+			if (matchPosition != -1) return matchPosition;
 		}
-		return 1;
+		
+		return matchPosition;
 	}
 	
 	
 	private boolean verifyBond(char longStrandChar, char shortStrandChar)
 	{
-		
-		return true;
+		switch(Character.toUpperCase(shortStrandChar)){
+		case 'A':
+			if (longStrandChar == BaseBonds.A.complement) return true;
+		case 'T':
+			if (longStrandChar == BaseBonds.T.complement) return true;
+		case 'G':
+			if (longStrandChar == BaseBonds.G.complement) return true;
+		case 'C':
+			if (longStrandChar == BaseBonds.C.complement) return true;
+		default:
+			return false;
+		}
 	}
 	
 	//Instance variables
