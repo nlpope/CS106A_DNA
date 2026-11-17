@@ -79,7 +79,8 @@ public class CS106A_DNA extends ConsoleProgram
 			if (verifyFormatting(clientInputShort, clientInputLong)){
 				//PROBLEM CHILD
 				int firstMatch = findFirstMatchingPosition(clientInputShort, clientInputLong);
-				String results = (firstMatch != -1) ? Messages.Success.value + firstMatch: Messages.Fail.value;
+				println("yeah the match was detected at " + firstMatch);
+				String results = (firstMatch != -1) ? Messages.Success.value + firstMatch : Messages.Fail.value;
 				println(results);
 			} else {
 				println(Errors.FORMATTING.errValue);
@@ -128,16 +129,18 @@ public class CS106A_DNA extends ConsoleProgram
 	}
 	
 	
+	//PROBLEM CHILD
 	private int findFirstMatchingPosition(String shortDNA, String longDNA)
 	{
 		int matchPosition = -1;
 		boolean match = false; 
 		
-		//long strand
+		//long strand (persists)
 		for(int i = 0; i < longDNA.length() - shortDNA.length(); i++){
-			//short strand
+			//short strand (resets)
 			for(int j = 0; j < shortDNA.length(); j++){
 				if (verifyBond(shortDNA.charAt(j), longDNA.charAt(i)) && !match){
+					println("whoa i found a match in here at j = " + j + "and i = " + i);
 					match = true;
 					matchPosition = i;
 				} else if (!verifyBond(shortDNA.charAt(j), longDNA.charAt(i))){
@@ -148,7 +151,7 @@ public class CS106A_DNA extends ConsoleProgram
 					continue;
 				}
 			}
-			//if (matchPosition != -1) return matchPosition;
+			if (matchPosition != -1) return matchPosition;
 		}
 		
 		return matchPosition;
@@ -157,15 +160,35 @@ public class CS106A_DNA extends ConsoleProgram
 	
 	private boolean verifyBond(char shortStrandChar, char longStrandChar)
 	{
+	
+	
+	
+		
 		switch(Character.toUpperCase(shortStrandChar)){
 		case 'A':
-			if (longStrandChar == BaseBonds.A.complement) return true;
+			println("a detected");
+			println("shortstrand = " + shortStrandChar);
+			println("longstrand = " + longStrandChar);
+			if (Character.toUpperCase(longStrandChar) == 'T') return true;
+			
 		case 'T':
-			if (longStrandChar == BaseBonds.T.complement) return true;
+			println("t detected");
+			println("shortstrand = " + shortStrandChar);
+			println("longstrand = " + longStrandChar);
+			if (Character.toUpperCase(longStrandChar) == 'A') return true;
+			
 		case 'G':
-			if (longStrandChar == BaseBonds.G.complement) return true;
+			println("g detected");
+			println("shortstrand = " + shortStrandChar);
+			println("longstrand = " + longStrandChar);
+			if (Character.toUpperCase(longStrandChar) == 'C') {println("G BOND MET"); return true;}
+			
 		case 'C':
-			if (longStrandChar == BaseBonds.C.complement) return true;
+			println("c detected");
+			println("shortstrand = " + shortStrandChar);
+			println("longstrand = " + longStrandChar);
+			if (Character.toUpperCase(longStrandChar) == 'G') return true;
+			
 		default:
 			return false;
 		}
