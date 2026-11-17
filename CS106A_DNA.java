@@ -30,7 +30,7 @@ public class CS106A_DNA extends ConsoleProgram
 	}
 	
 	public enum Messages { 
-		Success("Match detected "), Fail("No match detected.");
+		Success("Match detected at "), Fail("No match detected.");
 		
 		private final String value;
 		
@@ -77,6 +77,7 @@ public class CS106A_DNA extends ConsoleProgram
 			if (!continueLoop) break;
 			
 			if (verifyFormatting(clientInputShort, clientInputLong)){
+				//PROBLEM CHILD
 				int firstMatch = findFirstMatchingPosition(clientInputShort, clientInputLong);
 				String results = (firstMatch != -1) ? Messages.Success.value + firstMatch: Messages.Fail.value;
 				println(results);
@@ -132,12 +133,14 @@ public class CS106A_DNA extends ConsoleProgram
 		int matchPosition = -1;
 		boolean match = false; 
 		
-		for(int i = 0; i < longDNA.length()-shortDNA.length(); i++){
-			for(int j = i; j < shortDNA.length(); j++){
-				if (verifyBond(shortDNA.charAt(i), longDNA.charAt(j)) && !match){
+		//long strand
+		for(int i = 0; i < longDNA.length() - shortDNA.length(); i++){
+			//short strand
+			for(int j = 0; j < shortDNA.length(); j++){
+				if (verifyBond(shortDNA.charAt(j), longDNA.charAt(i)) && !match){
 					match = true;
-					matchPosition = j;
-				} else if (!verifyBond(shortDNA.charAt(i), longDNA.charAt(j))){
+					matchPosition = i;
+				} else if (!verifyBond(shortDNA.charAt(j), longDNA.charAt(i))){
 					match = false;
 					matchPosition = -1;
 					break;
@@ -145,14 +148,14 @@ public class CS106A_DNA extends ConsoleProgram
 					continue;
 				}
 			}
-			if (matchPosition != -1) return matchPosition;
+			//if (matchPosition != -1) return matchPosition;
 		}
 		
 		return matchPosition;
 	}
 	
 	
-	private boolean verifyBond(char longStrandChar, char shortStrandChar)
+	private boolean verifyBond(char shortStrandChar, char longStrandChar)
 	{
 		switch(Character.toUpperCase(shortStrandChar)){
 		case 'A':
