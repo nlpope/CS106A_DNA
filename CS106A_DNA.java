@@ -55,19 +55,26 @@ public class CS106A_DNA extends ConsoleProgram
 	public void run()
 	{
 		introduceApp();
-		while (true){ 
+		boolean continueLoop = true;
+		while (continueLoop){ 
 			
-			for (int i = 0; i < 2; i ++){
+			for (int i = 0; i < 2; i ++){	
+				
+			
+				if (clientInputShort.equals("")){
+					setClientInput(BaseLengths.SHORT); 
+				} else if (clientInputLong.equals("")) { 
+					setClientInput(BaseLengths.LONG);
+				} 
+				
 				if (clientInputShort.equals(SENTINEL) || clientInputLong.equals(SENTINEL)){ 
 					println("goodbye");
-					break; 	
-					
-				} else if (clientInputShort.equals("")){
-					setClientInput(BaseLengths.SHORT); 
-				} else { 
-					setClientInput(BaseLengths.LONG);
+					continueLoop = false;
+					break;
 				}
 			}
+			
+			if (!continueLoop) break;
 			
 			if (verifyFormatting(clientInputShort, clientInputLong)){
 				int firstMatch = findFirstMatchingPosition(clientInputShort, clientInputLong);
