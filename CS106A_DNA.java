@@ -129,7 +129,6 @@ public class CS106A_DNA extends ConsoleProgram
 	}
 	
 	
-	//PROBLEM CHILD
 	private int findFirstMatchingPosition(String shortDNA, String longDNA)
 	{
 		int matchPosition = -1;
@@ -157,38 +156,35 @@ public class CS106A_DNA extends ConsoleProgram
 		return matchPosition;
 	}
 	
-	
+	//PROBLEM CHILD - DESIRED RESULT REACHED BUT THEN IT'S RESETTING - TRY GTA THEN GCATG TO TEST
 	private boolean verifyBond(char shortStrandChar, char longStrandChar)
-	{
-	
-	
-	
-		
+	{	
 		switch(Character.toUpperCase(shortStrandChar)){
 		case 'A':
 			println("a detected");
 			println("shortstrand = " + shortStrandChar);
 			println("longstrand = " + longStrandChar);
 			if (Character.toUpperCase(longStrandChar) == 'T') return true;
-			
+			else return false;
 		case 'T':
 			println("t detected");
 			println("shortstrand = " + shortStrandChar);
 			println("longstrand = " + longStrandChar);
 			if (Character.toUpperCase(longStrandChar) == 'A') return true;
+			else return false;
 			
 		case 'G':
 			println("g detected");
 			println("shortstrand = " + shortStrandChar);
 			println("longstrand = " + longStrandChar);
 			if (Character.toUpperCase(longStrandChar) == 'C') {println("G BOND MET"); return true;}
-			
+			else return false;
 		case 'C':
 			println("c detected");
 			println("shortstrand = " + shortStrandChar);
 			println("longstrand = " + longStrandChar);
 			if (Character.toUpperCase(longStrandChar) == 'G') return true;
-			
+			else return false;
 		default:
 			return false;
 		}
