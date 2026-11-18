@@ -138,17 +138,16 @@ public class CS106A_DNA extends ConsoleProgram
 		for(int i = 0; i < longDNA.length() - shortDNA.length(); i++){
 			//short strand (resets)
 			for(int j = 0; j < shortDNA.length(); j++){
-				if (verifyBond(shortDNA.charAt(j), longDNA.charAt(i)) && !match){
-					println("whoa i found a match in here at j = " + j + "and i = " + i);
+				//MAKE SURE THIS IS GOOD LOGIC THEN INVESTIGATE VERIFYBOND()
+				if (verifyBond(shortDNA.charAt(j), longDNA.charAt(i))){
+					if (match == true) continue;
 					match = true;
 					matchPosition = i;
-				} else if (!verifyBond(shortDNA.charAt(j), longDNA.charAt(i))){
+				} else {
 					match = false;
 					matchPosition = -1;
-					break;
-				} else {
-					continue;
-				}
+					break; //breaks out of this j for loop and moves on to next i in long strand
+				} 
 			}
 			if (matchPosition != -1) return matchPosition;
 		}
