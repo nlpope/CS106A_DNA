@@ -30,7 +30,7 @@ public class CS106A_DNA extends ConsoleProgram
 	}
 	
 	public enum Messages { 
-		Success("Match detected at "), Fail("No match detected.");
+		Success("Match detected at index "), Fail("No match detected.");
 		
 		private final String value;
 		
@@ -129,6 +129,8 @@ public class CS106A_DNA extends ConsoleProgram
 		
 		return true;
 	}
+	
+	
 	/**
 	 * I fixed this using a while loop to iterate instead of a nested for loop
 	 * moreover, I set up a tmpi and tmpj to iterate both the long and short 
@@ -138,7 +140,6 @@ public class CS106A_DNA extends ConsoleProgram
 	 * help as well.
 	 * 
 	 * */
-	
 	private int findFirstMatchingPosition(String shortDNA, String longDNA)
 	{
 		int matchPosition = -1;
@@ -161,7 +162,6 @@ public class CS106A_DNA extends ConsoleProgram
 		}
 		
 		return matchPosition; //wouuld be -1 here
-		
 	}
 		
 	
