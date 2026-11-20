@@ -74,10 +74,9 @@ public class CS106A_DNA extends ConsoleProgram
 				}
 			}
 			
-			if (!continueLoop) break;
+			if (!continueLoop) break; //for if client entered SENTINEL before setting the long DNA chain
 			
 			if (verifyFormatting(clientInputShort, clientInputLong)){
-				//PROBLEM CHILD
 				int firstMatch = findFirstMatchingPosition(clientInputShort, clientInputLong);
 				String results = (firstMatch != -1) ? Messages.Success.value + firstMatch : Messages.Fail.value;
 				println(results);
@@ -93,7 +92,11 @@ public class CS106A_DNA extends ConsoleProgram
 	
 	private void introduceApp()
 	{
-		
+		println("The CS106A_DNA class finds the first index position at " +
+				"which a short string representing a DNA base would " +
+				"bind with a longer string representing the same," +
+				"or -1 should said index not exist.");
+		pause(5000);
 	}
 	
 	
@@ -126,7 +129,15 @@ public class CS106A_DNA extends ConsoleProgram
 		
 		return true;
 	}
-	
+	/**
+	 * I fixed this using a while loop to iterate instead of a nested for loop
+	 * moreover, I set up a tmpi and tmpj to iterate both the long and short 
+	 * strands to avoid accidently iterating the i too far or not iterating
+	 * it at all. The while loop, tmpj, and tmpi vars were the key here.
+	 * Also, the ternary operator to set the match var was a huge, consice
+	 * help as well.
+	 * 
+	 * */
 	
 	private int findFirstMatchingPosition(String shortDNA, String longDNA)
 	{
@@ -158,32 +169,22 @@ public class CS106A_DNA extends ConsoleProgram
 	{	
 		switch(Character.toUpperCase(shortStrandChar)){
 		case 'A':
-			println("a detected");
-			println("shortstrand = " + shortStrandChar);
-			println("longstrand = " + longStrandChar);
-			if (Character.toUpperCase(longStrandChar) == BaseBonds.A.complement){println("A BOND MET\n"); return true;}
-			else {println("NO BOND MET\n"); return false; }
+			if (Character.toUpperCase(longStrandChar) == BaseBonds.A.complement) return true;
+			else return false; 
+			
 		case 'T':
-			println("t detected");
-			println("shortstrand = " + shortStrandChar);
-			println("longstrand = " + longStrandChar);
-			if (Character.toUpperCase(longStrandChar) == BaseBonds.T.complement) {println("T BOND MET\n"); return true;}
-			else {println("NO BOND MET\n"); return false; }
+			if (Character.toUpperCase(longStrandChar) == BaseBonds.T.complement) return true;
+			else return false; 
 			
 		case 'G':
-			println("g detected");
-			println("shortstrand = " + shortStrandChar);
-			println("longstrand = " + longStrandChar);
-			if (Character.toUpperCase(longStrandChar) == BaseBonds.G.complement) {println("G BOND MET\n"); return true;}
-			else {println("NO BOND MET\n"); return false; }
+			if (Character.toUpperCase(longStrandChar) == BaseBonds.G.complement) return true;
+			else return false; 
+			
 		case 'C':
-			println("c detected");
-			println("shortstrand = " + shortStrandChar);
-			println("longstrand = " + longStrandChar);
-			if (Character.toUpperCase(longStrandChar) == BaseBonds.C.complement) {println("C BOND MET\n"); return true;}
-			else {println("NO BOND MET\n"); return false; }
+			if (Character.toUpperCase(longStrandChar) == BaseBonds.C.complement) return true;
+			else return false; 
+			
 		default:
-			println("NO CORRCT BASE DETECTE\n");
 			return false;
 		}
 	}
