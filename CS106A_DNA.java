@@ -79,7 +79,6 @@ public class CS106A_DNA extends ConsoleProgram
 			if (verifyFormatting(clientInputShort, clientInputLong)){
 				//PROBLEM CHILD
 				int firstMatch = findFirstMatchingPosition(clientInputShort, clientInputLong);
-				println("yeah the match was detected at " + firstMatch);
 				String results = (firstMatch != -1) ? Messages.Success.value + firstMatch : Messages.Fail.value;
 				println(results);
 			} else {
@@ -134,28 +133,27 @@ public class CS106A_DNA extends ConsoleProgram
 		int matchPosition = -1;
 		boolean match = false; 
 		
-		//long strand (persists)
-		for(int i = 0; i < longDNA.length() - shortDNA.length(); i++){
-			//short strand (resets)
-			for(int j = 0; j < shortDNA.length(); j++){
-				//MAKE SURE THIS IS GOOD LOGIC THEN INVESTIGATE VERIFYBOND()
-				if (verifyBond(shortDNA.charAt(j), longDNA.charAt(i))){
-					if (match == true) continue;
-					match = true;
-					matchPosition = i;
-				} else {
-					match = false;
-					matchPosition = -1;
-					break; //breaks out of this j for loop and moves on to next i in long strand
-				} 
+		for (int i = 0, j = 0; i <= longDNA.length() - shortDNA.length(); i++){
+			int tmpi = i; //longDNA iteration persists
+			int tmpj = j; //always resets at 0 for shortDNA iteration
+			while (tmpj < shortDNA.length()){
+				match = verifyBond(shortDNA.charAt(tmpj), longDNA.charAt(tmpi)) ? true : false;
+				
+				if (match && matchPosition == -1){ matchPosition = tmpi; }
+				else if (!match) { matchPosition = -1; }
+				
+				tmpj++; 
+				tmpi++;
 			}
-			if (matchPosition != -1) return matchPosition;
+			
+			if (match) return matchPosition;
 		}
 		
-		return matchPosition;
+		return matchPosition; //wouuld be -1 here
+		
 	}
+		
 	
-	//PROBLEM CHILD - DESIRED RESULT REACHED BUT THEN IT'S RESETTING - TRY GTA THEN GCATG TO TEST
 	private boolean verifyBond(char shortStrandChar, char longStrandChar)
 	{	
 		switch(Character.toUpperCase(shortStrandChar)){
@@ -163,28 +161,29 @@ public class CS106A_DNA extends ConsoleProgram
 			println("a detected");
 			println("shortstrand = " + shortStrandChar);
 			println("longstrand = " + longStrandChar);
-			if (Character.toUpperCase(longStrandChar) == 'T') return true;
-			else return false;
+			if (Character.toUpperCase(longStrandChar) == BaseBonds.A.complement){println("A BOND MET\n"); return true;}
+			else {println("NO BOND MET\n"); return false; }
 		case 'T':
 			println("t detected");
 			println("shortstrand = " + shortStrandChar);
 			println("longstrand = " + longStrandChar);
-			if (Character.toUpperCase(longStrandChar) == 'A') return true;
-			else return false;
+			if (Character.toUpperCase(longStrandChar) == BaseBonds.T.complement) {println("T BOND MET\n"); return true;}
+			else {println("NO BOND MET\n"); return false; }
 			
 		case 'G':
 			println("g detected");
 			println("shortstrand = " + shortStrandChar);
 			println("longstrand = " + longStrandChar);
-			if (Character.toUpperCase(longStrandChar) == 'C') {println("G BOND MET"); return true;}
-			else return false;
+			if (Character.toUpperCase(longStrandChar) == BaseBonds.G.complement) {println("G BOND MET\n"); return true;}
+			else {println("NO BOND MET\n"); return false; }
 		case 'C':
 			println("c detected");
 			println("shortstrand = " + shortStrandChar);
 			println("longstrand = " + longStrandChar);
-			if (Character.toUpperCase(longStrandChar) == 'G') return true;
-			else return false;
+			if (Character.toUpperCase(longStrandChar) == BaseBonds.C.complement) {println("C BOND MET\n"); return true;}
+			else {println("NO BOND MET\n"); return false; }
 		default:
+			println("NO CORRCT BASE DETECTE\n");
 			return false;
 		}
 	}
